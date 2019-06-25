@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+cd /judge
+
+if [ -f /judge/tests/last ] ; then
+    TOTAL=$(cat /judge/tests/last)
+    echo "${TOTAL} total test cases"
+else
+    echo "/judge/tests/last not found" 1>&2
+    exit 1
+fi
+
+for INDEX in $(seq -s " " 0 ${TOTAL}) ; do
+    touch "/judge/tests/input/${INDEX}"
+    if [ -f "/judge/tests/req/${INDEX}" ] ; then
+        RESOURCE=$(cat "/judge/tests/req/${INDEX}")
+    elif [ -f "/judge/tests/req/default" ] ; then
+        RESOURCE=$(cat "/judge/tests/req/default")
+    else
+        echo "resource constraint for ${INDEX} not found" 1>&2
+        exit 1
+    fi
+    ./run.py "/judge/tests/input/${INDEX}" "/test/${INDEX}" "/dev/null" ${RESOURCE} || echo $? > /test/err${INDEX}
+done

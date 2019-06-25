@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+function exit_trap () {
+    exit $1
+}
+
+/judge/grading/grade.py $(cat /judge/tests/last) || exit_trap $? # non zero return will directly result in 0 score no matter what

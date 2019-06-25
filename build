@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+cd /submission/
+gcc -O2 -w -fmax-errors=3 -std=c11 /submission/main.c -lm -o /test/executable
+
+chown student:student -R /test
+
